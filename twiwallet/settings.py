@@ -166,8 +166,8 @@ LOGIN_URL = '/login/'
 
 AUTH_PROFILE_MODULE = 'users.Profile'
 
-TWITTER_CONSUMER_KEY = 'OaVcWXFubxcsLM9BY23YDw'
-TWITTER_CONSUMER_SECRET_KEY = 'gNxZzG8GtwyWe15o5No915bA0Ujfasdaqs8DtpvY'
+TWITTER_CONSUMER_KEY = 'your key'
+TWITTER_CONSUMER_SECRET_KEY = 'your key'
 TWITTER_REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token'
 TWITTER_ACCESS_TOKEN_URL = 'https://api.twitter.com/oauth/access_token'
 TWITTER_AUTHORIZATION_URL = 'https://api.twitter.com/oauth/authenticate'
