@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<button id='create_transaction'>Add transaction</button>
+<div id="add_transaction" aling="left" title="Додати">	
+	<form>
+	<fieldset>
+		<label for="name">Budget</label>
+		<input type="text" name="budget" id="budget" class="text ui-widget-content ui-corner-all" />
+		<label for="email">Category</label>
+		<input type="text" name="category" id="category" value="" class="text ui-widget-content ui-corner-all" />		
+		<label for="email">Money</label>
+		<input type="text" name="money" id="money" value="" class="text ui-widget-content ui-corner-all" />	
+	</fieldset>
+	</form>
+</div>
+
+<table id="trans" class="ui-widget ui-widget-content">
+	<tbody>
+	</tbody>
+</table>
+
+<script type="text/javascript">
+$(function() {
+	   // budget autovcomlete
+		$( "#budget" ).autocomplete({
+			source: function( request, response ) {
+				$.ajax({
+					url: "{% url budget_autcomplete %}",
+					dataType: "json",
+					data: {
+						budget: request.term
+					},
+					success: function( data ) {
+						if(data){
+							response( $.map( data.names, function( item ) {	
+								return {
+									label: item.name,
+									value: item.name,
+									id : item.id
+								}													
+							}));
+						}
+					}
+				});
+			},
+			select: function( event, ui ) {
+				$.getJSON("{% url budget_autcomplete %}",{
+		        	id: ui.item.id
+  				},function(data){
+  					alert(data)
+  				});	
+			},
+			open: function() {
+				$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+			},
+			close: function() {
+				$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+			}
+		});
+		// category autovcomlete
+		$( "#category" ).autocomplete({
+			source: function( request, response ) {
+				$.ajax({
+					url: "{% url category_autcomplete %}",
+					dataType: "json",
+					data: {
+						budget: request.term
+					},
+					success: function( data ) {
+						if(data){
+							response( $.map( data.names, function( item ) {	
+								return {
+									label: item.name,
+									value: item.name,
+									id : item.id
+								}													
+							}));
+						}
+					}
+				});
+			},
+			select: function( event, ui ) {
+				$.getJSON("{% url category_autcomplete %}",{
+		        	id: ui.item.id
+  				},function(data){
+  					alert(data)
+  				});	
+			},
+			open: function() {
+				$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+			},
+			close: function() {
+				$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+			}
+		});
+
+		var budget = $( "#budget" ),
+			category = $( "#category" ),
+			money = $( "#money" );
+
+		// modal form
+		$( "#add_transaction" ).dialog({
+			autoOpen: false,
+			height: 400,
+			width: 350,
+			modal: true,
+			buttons: {
+				"Add": function() {	
+						var postdata={
+          					'budget':budget.val(), 
+          					'category':category.val(),
+          					'money':money.val(),
+          					'csrftoken': '{{ csrf_token }}'
+     					};
+     					$.post('{% url add_transaction_ajax %}',postdata);
+						$( "#trans tbody" ).append( "<tr>" +
+							"<td>" + budget.val() + "</td>" + 
+							"<td>" + category.val() + "</td>" + 
+							"<td>" + money.val() + "</td>" +
+						"</tr>" ); 
+						$( this ).dialog( "close" );
+				},
+				"Cancel": function() {
+					$( this ).dialog( "close" );
+				}
+			},
+			close: function() {
+				allFields.val( "" ).removeClass( "ui-state-error" );
+			}
+		});
+
+		$( "#create_transaction" ).on('click',
+			function() {
+				$( "#add_transaction" ).dialog( "open" );
+			});
+
+});
+</script>
+{% endblock %}
+
+

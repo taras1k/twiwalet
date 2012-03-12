@@ -1,8 +1,14 @@
 # Django settings for twiwallet project.
 import os
 
+from pymongo import Connection
+
+connection = Connection()
+
+DB = connection.twiwallet
+
 def rel(dir_name):
-    project_dir = os.path.absolute(os.path.dirname(__file__))
+    project_dir = os.path.normpath(os.path.dirname(__file__))
     return os.path.join(project_dir, dir_name)
 
 
@@ -19,7 +25,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
+        'NAME': 'twiwallet',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -110,6 +116,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'twiwallet.urls'
 
 TEMPLATE_DIRS = (
+    rel('templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -124,9 +131,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'budget',
     'users',
+    'main',
     'transactions',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -158,8 +166,8 @@ LOGIN_URL = '/login/'
 
 AUTH_PROFILE_MODULE = 'users.Profile'
 
-TWITTER_CONSUMER_KEY = 'YOUR KEY'
-TWITTER_CONSUMER_SECRET_KEY = 'YOUR KEY'
+TWITTER_CONSUMER_KEY = 'OaVcWXFubxcsLM9BY23YDw'
+TWITTER_CONSUMER_SECRET_KEY = 'gNxZzG8GtwyWe15o5No915bA0Ujfasdaqs8DtpvY'
 TWITTER_REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token'
 TWITTER_ACCESS_TOKEN_URL = 'https://api.twitter.com/oauth/access_token'
 TWITTER_AUTHORIZATION_URL = 'https://api.twitter.com/oauth/authenticate'
