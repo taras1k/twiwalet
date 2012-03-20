@@ -1,17 +1,10 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response, HttpResponse
 from helpers.autocomplete import search
 from models import Budget, Category
 from django.views.decorators.csrf import csrf_exempt
 
-@csrf_exempt
-def add_transaction_ajax(request):
-    result = {}
-    result['budget'] = request.POST.get('budget', '')
-    result['category'] = request.POST.get('category', '')
-    result['money'] = request.POST.get('money', '')
-    result['posted'] = True
-    print result
-    return HttpResponse(result, mimetype = 'application/javascript')
+
 
 def budget_autcomplete(request):    
     name = request.GET.get('budget','')

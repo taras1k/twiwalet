@@ -1,21 +1,19 @@
+# -*- coding: utf-8 -*-
 from settings import DB
 from django.db import models
 
-class Transaction(object):
+class TransactionModel(object):
 
-    def __init__(self, owner, budget):
+    def __init__(self, owner=None, budget=None, category=None, money=None, description=None):
         self.transactions = DB.transactions
         self.transaction = {
             'owner' : owner,
             'budget' : budget,
-            'sum' : 0,
-            'description' : ''
+            'category' : category,
+            'money' : money,
+            'description' : description
         }
     
-    def __init__(self, query):
-        self.transactions = DB.transactions
-        self.transaction = self.transactions.find_one(query)
-
     def get(self, query):
         return self.transactions.find(query)
 

@@ -7,9 +7,7 @@ from django.conf import settings
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^budget_autocomplete/', 
-            'budget.views.budget_autcomplete', name='budget_autcomplete'),
-    url(r'^category_autocomplete/', 
-            'budget.views.category_autcomplete', name='category_autcomplete'),
+    url(r'^post_trans_ajax/', 
+            'transactions.views.add_transaction_ajax', name='add_transaction_ajax'),
 )
 

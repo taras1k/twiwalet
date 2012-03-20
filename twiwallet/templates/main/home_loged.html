@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block title %}
+Home
+{% endblock %}
+
 {% block body %}
 
 <button id='create_transaction'>Add transaction</button>
@@ -23,6 +27,18 @@
 
 <script type="text/javascript">
 $(function() {
+    	var transaction = {
+    		budget_id : 0,
+    		category_id : 0,
+    		budget : $( "#budget" ),
+			category : $( "#category" ),
+			money : $( "#money" ),
+			allFields : $( [] )
+			              .add( budget )
+			              .add( category )
+			              .add( money )
+    	}
+	   
 	   // budget autovcomlete
 		$( "#budget" ).autocomplete({
 			source: function( request, response ) {
@@ -46,11 +62,7 @@ $(function() {
 				});
 			},
 			select: function( event, ui ) {
-				$.getJSON("{% url budget_autcomplete %}",{
-		        	id: ui.item.id
-  				},function(data){
-  					alert(data)
-  				});	
+				transaction.budget_id = ui.item ? ui.item.id : 0;
 			},
 			open: function() {
 				$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -82,11 +94,7 @@ $(function() {
 				});
 			},
 			select: function( event, ui ) {
-				$.getJSON("{% url category_autcomplete %}",{
-		        	id: ui.item.id
-  				},function(data){
-  					alert(data)
-  				});	
+				transaction.category_id = ui.item ? ui.item.id : 0;
 			},
 			open: function() {
 				$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
@@ -95,10 +103,6 @@ $(function() {
 				$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
 			}
 		});
-
-		var budget = $( "#budget" ),
-			category = $( "#category" ),
-			money = $( "#money" );
 
 		// modal form
 		$( "#add_transaction" ).dialog({
@@ -109,16 +113,18 @@ $(function() {
 			buttons: {
 				"Add": function() {	
 						var postdata={
-          					'budget':budget.val(), 
-          					'category':category.val(),
-          					'money':money.val(),
+							'budget_id': transaction.budget_id,
+							'category_id': transaction.category_id,
+          					'budget': transaction.budget.val(), 
+          					'category': transaction.category.val(),
+          					'money': transaction.money.val(),
           					'csrftoken': '{{ csrf_token }}'
      					};
      					$.post('{% url add_transaction_ajax %}',postdata);
 						$( "#trans tbody" ).append( "<tr>" +
-							"<td>" + budget.val() + "</td>" + 
-							"<td>" + category.val() + "</td>" + 
-							"<td>" + money.val() + "</td>" +
+							"<td>" + transaction.budget.val() + "</td>" + 
+							"<td>" + transaction.category.val() + "</td>" + 
+							"<td>" + transaction.money.val() + "</td>" +
 						"</tr>" ); 
 						$( this ).dialog( "close" );
 				},
@@ -127,7 +133,9 @@ $(function() {
 				}
 			},
 			close: function() {
-				allFields.val( "" ).removeClass( "ui-state-error" );
+				transaction.allFields.val( "" ).removeClass( "ui-state-error" );
+				transaction.budget_id = 0;
+				transaction.category_id = 0;
 			}
 		});
 
