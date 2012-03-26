@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     url(r'^logout/?$', 'users.views.twitter_logout', name='lgout'),
     url(r'^login/authenticated/?$', 'users.views.twitter_authenticated', name='authenticated'),
     
-    url(r'^static/(?P<path>.*)$', 'django.views.static.serve',
+    url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.MEDIA_ROOT, 'show_indexes':True}, name='static'),
 
 )

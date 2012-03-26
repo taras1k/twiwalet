@@ -11,5 +11,8 @@ urlpatterns = patterns('',
             'budget.views.budget_autcomplete', name='budget_autcomplete'),
     url(r'^category_autocomplete/', 
             'budget.views.category_autcomplete', name='category_autcomplete'),
+    url(r'^budget_list/', 
+            'budget.views.get_budgets_json', name='budget_list'),
+            
 )
 
